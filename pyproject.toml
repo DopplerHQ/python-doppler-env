@@ -1,0 +1,7 @@
+[tool.black]
+skip-string-normalization = true
+line-length = 120
+
+[flake8]
+ignore = E501
+max-line-length = 120
