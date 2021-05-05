@@ -1,5 +1,8 @@
 .PHONY: clean-pyc clean-build test
 
+build:
+	python -m build .
+
 clean: clean-build clean-pyc
 
 clean-build:
@@ -11,14 +14,6 @@ clean-pyc:
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
-
-release: sdist
-	twine check dist/*
-	twine upload dist/*
-
-sdist: clean
-	python setup.py sdist bdist_wheel
-	ls -l dist
 
 flake8:
 	flake8 .
