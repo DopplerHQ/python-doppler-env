@@ -1,24 +1,22 @@
 # doppler-env
 
-Inject Doppler secrets as environment variables into your Python application during local development. Provides debugging support in PyCharm, Visual Studio Code, and other IDEs and editors.
-
-Inspired by [patch-env](https://github.com/caricalabs/patch-env).
-
-> NOTE: This package should be used during local development only. It is not suitable, recommended, or supported for production usage.
+Inject Doppler secrets as environment variables into your Python application during local development with built-in debugging support for PyCharm and Visual Studio Code.
 
 ## How it works
 
-Debugging in IDE's such as PyCharm and Visual Studio Code do not allow the Doppler CLI to be used as the process runner for Python as they use their own Python debugger entrypoint. This often forces developers to resort to insecure practices such saving Doppler secrets to an `.env` file during development, the very problem Doppler was created to prevent.
+Debugging support in PyCharm and Visual Studio Code is provided by a vendor-specific Python entry-point which prevents the Doppler CLI from being used to directly inject secrets.
 
-The **doppler-env** package provides a solution in the form of a [site hook that is run at Python startup](https://docs.python.org/3/library/site.html).
+This limitation may force developers to use insecure practices such as saving secrets to an unencrypted `.env` file—the issue Doppler was created to prevent.
 
-If the `DOPPLER_ENV` environment variable is set, the package will call out to the Doppler CLI to fetch secrets for the project and inject them as environment variables into the process spwawned by the commmand line or IDE with your secrets never touching the file system.
+Simply set the `DOPPLER_ENV` environment variable, and the `doppler-env` package will fetch your secrets using the Doppler CLI, injecting them as environment variables before executing your Python code.
+
+All this while ensuring secrets never touch the file system.
 
 ## Requirements
 
-Ensure the [Doppler CLI](https://docs.doppler.com/docs/enclave-installation) is installed and you have [created a project in Doppler](https://docs.doppler.com/docs/enclave-project-setup).
+Ensure you have installed the [Doppler CLI](https://docs.doppler.com/docs/enclave-installation) and [created a project in the Doppler dashboard](https://docs.doppler.com/docs/enclave-project-setup).
 
-Then authenticate the Doppler CLI so it can retrieve secrets from your workplace:
+Then in a local terminal, authorize the Doppler CLI to retrieve secrets from your workplace:
 
 ```sh
 doppler login
@@ -26,7 +24,7 @@ doppler login
 
 ## Getting started
 
-1. If you haven't already, open a new terminal window, change into the repository folder, then configure the Doppler CLI by selecting the project and config for development:
+1. If you haven't already, open a new terminal window, change into the repository folder, then configure the Doppler CLI by selecting the project and config to supply secrets for:
 
 ```sh
 doppler setup
@@ -38,14 +36,26 @@ doppler setup
 pip install doppler-env
 ```
 
-3. On the command line or in your editor, set the environment variable `DOPPLER_ENV` to trigger injecting secrets as environment variables:
+3. Define the `DOPPLER_ENV` environment variable in your IDE, editor, or terminal:
 
 ```sh
 export DOPPLER_ENV=1
 ```
 
-4. Run or debug your application as per normal:
+4. Run or debug your application in your IDE, editor, or terminal:
 
 ```sh
 python src/app.py
 ```
+
+## Acknowledgements
+
+This approach to injecting environment variables was inspired by [patch-env](https://github.com/caricalabs/patch-env) and customized to be Doppler specific.
+
+## Issues
+
+For any bug reports, issues, or enhancements, please [create a repository issue](https://github.com/DopplerHQ/python-doppler-env/issues/new).
+
+## Support
+
+Paid subscribers can use in-product support while those on Doppler's free community plan can receive help in our [Community forum](https://community.doppler.com/).
