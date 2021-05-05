@@ -21,9 +21,9 @@ def long_description():
 
 setup(
     name='doppler_env',
-    version='0.2.0',
+    version='0.2.1',
     python_requires='>=3.8',
-    description='Inject Doppler secrets as environment variables into your Python application during local development with built-in debugging support for PyCharm and Visual Studio Code',
+    description='Inject Doppler secrets as environment variables into your Python application during local development with debugging support for PyCharm and Visual Studio Code.',
     long_description=long_description(),
     long_description_content_type='text/markdown',
     url='https://github.com/dopplerhq/python-doppler-env',

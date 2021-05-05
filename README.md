@@ -1,6 +1,6 @@
 # doppler-env
 
-Inject Doppler secrets as environment variables into your Python application during local development with built-in debugging support for PyCharm and Visual Studio Code.
+Inject Doppler secrets as environment variables into your Python application during local development with debugging support for PyCharm and Visual Studio Code.
 
 ## How it works
 
