@@ -9,7 +9,7 @@ https://github.com/pypa/sampleproject
 from codecs import open
 from os import path
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 here = path.abspath(path.dirname(__file__))
 
@@ -21,8 +21,8 @@ def long_description():
 
 setup(
     name='doppler_env',
-    version='0.2.1',
-    python_requires='>=3.8',
+    version='0.2.2',
+    python_requires='>=3.6',
     description='Inject Doppler secrets as environment variables into your Python application during local development with debugging support for PyCharm and Visual Studio Code.',
     long_description=long_description(),
     long_description_content_type='text/markdown',
@@ -40,6 +40,8 @@ setup(
         'Topic :: Software Development :: Build Tools',
         'Topic :: Utilities',
         'License :: OSI Approved :: Apache Software License',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
     ],
