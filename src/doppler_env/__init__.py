@@ -7,22 +7,19 @@ import os
 def doppler_secrets_env():
     import io
     import subprocess
-    import logging
     from dotenv import load_dotenv
 
     DOPPLER_ENV_COMMAND = os.environ.get(
         'DOPPLER_ENV_COMMAND', 'doppler secrets download --no-file --format env'
     )
-    process = subprocess.run(DOPPLER_ENV_COMMAND, shell=True, capture_output=True)
-    if process.returncode != 0:
-        logging.error('Doppler secrets fetch failed {process.returncode}')
-        if process.stderr:
-            logging.error(process.stderr)
-        if process.stdout:
-            logging.error(process.stdout)
-    else:
-        config = io.StringIO(process.stdout.decode('utf-8'))
-        load_dotenv(stream=config)
+
+    # If non-zero exit code, catch Python exception so only output is stderr from Doppler CLI
+    try:
+        env_vars = subprocess.check_output(DOPPLER_ENV_COMMAND.split()).decode('utf-8')
+    except subprocess.CalledProcessError as err:
+        exit(err.returncode)
+
+    load_dotenv(stream=io.StringIO(env_vars))
 
 
 if os.environ.get('DOPPLER_ENV') is not None:
