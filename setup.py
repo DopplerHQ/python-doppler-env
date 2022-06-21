@@ -21,7 +21,7 @@ def long_description():
 
 setup(
     name='doppler_env',
-    version='0.2.2',
+    version='0.3.0',
     python_requires='>=3.6',
     description='Inject Doppler secrets as environment variables into your Python application during local development with debugging support for PyCharm and Visual Studio Code.',
     long_description=long_description(),
@@ -31,8 +31,8 @@ setup(
         'Bug Reports': 'https://github.com/dopplerhq/python-doppler-env/issues',
         'Source': 'https://github.com/dopplerhq/python-doppler-env',
     },
-    author='Doppler',
-    author_email='support@doppler.com',
+    author='Ryan Blunden',
+    author_email='ryan.blunden@doppler.com',
     license='APL 2.0',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -44,6 +44,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
     keywords='doppler, environment variables, app secrets, app config, os.environ',
     packages=['doppler_env'],
