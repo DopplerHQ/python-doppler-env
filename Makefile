@@ -18,7 +18,7 @@ activate:
 	. $(ACTIVATE)
 
 build:
-	python -m build .
+	. $(ACTIVATE) python -m build .
 
 clean: clean-build clean-pyc
 
