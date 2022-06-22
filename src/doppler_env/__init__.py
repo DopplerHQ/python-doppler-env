@@ -20,6 +20,12 @@ def fetch_cli():
         'DOPPLER_ENV_COMMAND', 'doppler secrets download --no-file --format env'
     )
 
+    try:
+        subprocess.check_output('doppler', stderr=subprocess.STDOUT).decode('utf-8')
+    except FileNotFoundError as err:
+        print('The Doppler CLI is not installed. See https://docs.doppler.com/docs/install-cli')
+        return
+
     # If non-zero exit code, catch Python exception so only output is stderr from Doppler CLI
     try:
         return subprocess.check_output(DOPPLER_ENV_COMMAND.split()).decode('utf-8')
