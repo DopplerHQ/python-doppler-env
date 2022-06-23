@@ -8,6 +8,7 @@ import subprocess
 import sys
 import urllib.request
 import urllib.error
+import urllib.parse
 
 from dotenv import load_dotenv
 
@@ -50,16 +51,17 @@ def fetch_api(doppler_token, project=None, config=None):
 
     auth_header = b'Basic %s' % b64encode('{}:'.format(doppler_token).encode('ascii'))
     headers = {'User-Agent': 'python-doppler-env', 'Authorization': auth_header}
-    url = 'https://api.doppler.com/v3/configs/config/secrets/download?format=env'
-    if 'dp.st' not in doppler_token and project and config:
-        url = '{url}&project={project}&config={config}'.format(url=url, project=project, config=config)
+    params = {'format': 'env'}
+    if project and config:
+        params.update({'project': project, 'config': config})
+    url = 'https://api.doppler.com/v3/configs/config/secrets/download?{}'.format(urllib.parse.urlencode(params))
 
     try:
         request = urllib.request.Request(url, headers=headers)
         response = urllib.request.urlopen(request)
         return response.read().decode('utf-8')
     except urllib.error.HTTPError as err:
-        log('Doppler API Error {}'.format(err))
+        log('Doppler API Error {}'.format(err.read().decode('utf-8')))
         print_debug_info(doppler_token, project, config)
 
 
