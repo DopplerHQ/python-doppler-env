@@ -11,48 +11,68 @@ import urllib.error
 
 from dotenv import load_dotenv
 
-def print_debug_info():
-    print(f'Python path: {sys.executable}')
-    print(f'Working directory: {os.getcwd()}')
+
+def log(message):
+    print('[doppler-env]: {}'.format(message))
+
+
+def print_debug_info(doppler_token=None, project=None, config=None):
+    doppler_token and log('Token: {}'.format(doppler_token))
+    project and log('Project: {}'.format(project))
+    config and log('Config: {}'.format(config))
+    log('Python path: {}'.format(sys.executable))
+    log('Working directory: {}'.format(os.getcwd()))
+
 
 def fetch_cli():
-    DOPPLER_ENV_COMMAND = os.environ.get(
-        'DOPPLER_ENV_COMMAND', 'doppler secrets download --no-file --format env'
-    )
+    command = os.environ.get('DOPPLER_ENV_COMMAND', 'doppler secrets download --no-file --format env')
 
     try:
         subprocess.check_output('doppler', stderr=subprocess.STDOUT).decode('utf-8')
-    except FileNotFoundError as err:
-        print('The Doppler CLI is not installed. See https://docs.doppler.com/docs/install-cli')
+    except FileNotFoundError:
+        log('The Doppler CLI is not installed. See https://docs.doppler.com/docs/install-cli')
         return
 
     # If non-zero exit code, catch Python exception so only output is stderr from Doppler CLI
     try:
-        return subprocess.check_output(DOPPLER_ENV_COMMAND.split()).decode('utf-8')
-    except subprocess.CalledProcessError as err:
+        return subprocess.check_output(command.split()).decode('utf-8')
+    except subprocess.CalledProcessError:
         print_debug_info()
 
 
-def fetch_api(doppler_token, format):    
-    auth_header = b'Basic %s' % b64encode(f'{doppler_token}:'.encode('ascii'))
-    url = 'https://api.doppler.com/v3/configs/config/secrets/download?format=%s' % format
+def fetch_api(doppler_token, project=None, config=None):
+    if ('dp.ct' in doppler_token or 'dp.pt' in doppler_token) and (project is None or config is None):
+        log(
+            'Error: DOPPLER_PROJECT and DOPPLER_CONFIG environment variables must be set if using a CLI or Personal Token'
+        )
+        print_debug_info()
+        return
+
+    auth_header = b'Basic %s' % b64encode('{}:'.format(doppler_token).encode('ascii'))
     headers = {'User-Agent': 'python-doppler-env', 'Authorization': auth_header}
-    request = urllib.request.Request(url, headers=headers)
-    
+    url = 'https://api.doppler.com/v3/configs/config/secrets/download?format=env'
+    if 'dp.st' not in doppler_token and project and config:
+        url = '{url}&project={project}&config={config}'.format(url=url, project=project, config=config)
+
     try:
+        request = urllib.request.Request(url, headers=headers)
         response = urllib.request.urlopen(request)
         return response.read().decode('utf-8')
     except urllib.error.HTTPError as err:
-        print('Doppler API Error: %s' % err)
-        print_debug_info()
+        log('Doppler API Error {}'.format(err))
+        print_debug_info(doppler_token, project, config)
 
 
-if os.environ.get('DOPPLER_ENV') is not None:    
-    if(os.environ.get('DOPPLER_TOKEN')):
-        print('DOPPLER_ENV and DOPPLER_TOKEN environment variable set. Fetching secrets from Doppler API.\n')
-        env_vars = fetch_api(os.environ.get('DOPPLER_TOKEN'), format='env')
+if os.environ.get('DOPPLER_ENV') is not None:
+    doppler_token = os.environ.get('DOPPLER_TOKEN')
+
+    if doppler_token:
+        log('DOPPLER_ENV and DOPPLER_TOKEN environment variable set. Fetching secrets from Doppler API')
+        env_vars = fetch_api(
+            os.environ.get('DOPPLER_TOKEN'), os.environ.get('DOPPLER_PROJECT'), os.environ.get('DOPPLER_CONFIG')
+        )
     else:
-        print('DOPPLER_ENV environment variable set. Fetching secrets using Doppler CLI.\n')
+        log('DOPPLER_ENV environment variable set. Fetching secrets using Doppler CLI')
         env_vars = fetch_cli()
-    
+
     load_dotenv(stream=io.StringIO(env_vars))

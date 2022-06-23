@@ -20,7 +20,7 @@
 
 - Changed supported Python version to >= 3.6
 
-## 0.3.0 June 21, 2022
+## 0.3.0 June 24, 2022
 
 - Improved error reporting
 - Support for fetching secrets using the Doppler API if `DOPPLER_TOKEN` environment variable set

@@ -18,7 +18,7 @@ activate:
 	. $(ACTIVATE)
 
 build:
-	. $(ACTIVATE) python -m build .
+	. $(ACTIVATE) && python -m build .
 
 clean: clean-build clean-pyc
 
@@ -33,8 +33,8 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 
 flake8:
-	. $(ACTIVATE) flake8 .
+	. $(ACTIVATE) && flake8 .
 
 black:
-	. $(ACTIVATE) black --skip-string-normalization --line-length 120 .
+	. $(ACTIVATE) && black --skip-string-normalization --line-length 120 .
 
