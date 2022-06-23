@@ -20,7 +20,11 @@
 
 - Changed supported Python version to >= 3.6
 
-## 0.3.0 June 24, 2022
+## 0.3.0 June 23, 2022
 
+- Fetch secrets from Doppler API if `DOPPLER_TOKEN` environment variable set
 - Improved error reporting
-- Support for fetching secrets using the Doppler API if `DOPPLER_TOKEN` environment variable set
+- Check that Doppler CLI is installed
+- Add support for CLI and Personal tokens
+- Improved README
+- Fix paths issue preventing wheel build on Windows
