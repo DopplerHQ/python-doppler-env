@@ -14,8 +14,8 @@ setup(
         'Bug Reports': 'https://github.com/dopplerhq/python-doppler-env/issues',
         'Source': 'https://github.com/dopplerhq/python-doppler-env',
     },
-    author='Ryan Blunden',
-    author_email='ryan.blunden@doppler.com',
+    author='Doppler',
+    author_email='support@doppler.com',
     license='APL 2.0',
     classifiers=[
         'Development Status :: 4 - Beta',
