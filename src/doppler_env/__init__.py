@@ -17,7 +17,7 @@ def log(message):
 
 
 def print_debug_info(doppler_token=None, project=None, config=None):
-    doppler_token and log('Token: {}'.format(doppler_token))
+    doppler_token and log('Token: {}.*****'.format('.'.join(doppler_token.split('.')[:-1])))
     project and log('Project: {}'.format(project))
     config and log('Config: {}'.format(config))
     log('Python path: {}'.format(sys.executable))
