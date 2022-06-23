@@ -15,6 +15,10 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Code checks
+      run: |
+        make flake8
+        make black
     - name: Build
       run: python -m build .
     - name: Publish
