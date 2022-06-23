@@ -8,7 +8,7 @@ ACTIVATE?=$(VENV)/activate
 .PHONY: create-virtual-env activate clean-pyc clean-build test
 
 create-virtual-env:
-	mkdir -p ~/.virtualenvs && \
+	mkdir -p $(VENVDIR) && \
 	python3 -m venv $(VENVDIR)/$(WORKDIR) && \
 	. $(ACTIVATE) && \
 	pip install --upgrade pip setuptools && \
