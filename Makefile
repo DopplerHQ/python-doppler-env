@@ -1,7 +1,24 @@
-.PHONY: clean-pyc clean-build test
+SHELL=/bin/bash
+VENVDIR?=${HOME}/.virtualenvs
+WORKDIR?=$(shell basename "$$PWD")
+VENV?=$(VENVDIR)/$(WORKDIR)/bin
+PYTHON?=$(VENV)/python
+ACTIVATE?=$(VENV)/activate
+
+.PHONY: create-virtual-env activate clean-pyc clean-build test
+
+create-virtual-env:
+	mkdir -p $(VENVDIR) && \
+	python3 -m venv $(VENVDIR)/$(WORKDIR) && \
+	. $(ACTIVATE) && \
+	pip install --upgrade pip setuptools && \
+	pip install -r requirements.txt
+
+activate:
+	. $(ACTIVATE)
 
 build:
-	python -m build .
+	. $(ACTIVATE) && python -m build .
 
 clean: clean-build clean-pyc
 
@@ -16,8 +33,8 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 
 flake8:
-	flake8 .
+	. $(ACTIVATE) && flake8 .
 
 black:
-	black --skip-string-normalization --line-length 120 .
+	. $(ACTIVATE) && black --skip-string-normalization --line-length 120 .
 
