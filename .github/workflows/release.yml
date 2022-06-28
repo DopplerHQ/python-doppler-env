@@ -16,8 +16,8 @@ jobs:
         pip install -r requirements.txt
     - name: Code checks
       run: |
-        make flake8
-        make black
+        flake8 .
+        black --skip-string-normalization --line-length 120 .
     - name: Build
       run: python -m build .
     - name: Publish
