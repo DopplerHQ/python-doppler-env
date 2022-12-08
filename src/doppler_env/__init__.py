@@ -12,9 +12,12 @@ import urllib.parse
 
 from dotenv import load_dotenv
 
+LOGGING_ENABLED = True if os.environ.get('DOPPLER_ENV_LOGGING') is not None else False
+
 
 def log(message):
-    print('[doppler-env]: {}'.format(message))
+    if LOGGING_ENABLED:
+        print('[doppler-env]: {}'.format(message))
 
 
 def print_debug_info(doppler_token=None, project=None, config=None):

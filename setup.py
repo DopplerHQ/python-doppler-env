@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='doppler_env',
-    version='0.3.0',
+    version='0.3.1',
     python_requires='>=3.6',
     description='Inject Doppler secrets as environment variables into your Python application during local development with debugging support for PyCharm and Visual Studio Code.',
     long_description=open('README.md').read(),
