@@ -28,3 +28,7 @@
 - Add support for CLI and Personal tokens
 - Improved README
 - Fix paths issue preventing wheel build on Windows
+
+## 0.3.1 December 8, 2022
+
+- Logging is now disabled by default and can be enabled by setting the `DOPPLER_ENV_LOGGING` environment variable.
